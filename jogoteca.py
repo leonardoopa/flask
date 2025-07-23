@@ -1,40 +1,33 @@
-# We need to import request, redirect, and url_for from Flask
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect
 
-# The Jogo class remains the same
 class Jogo:
     def __init__(self, nome, categoria, console):
-        self.nome = nome
-        self.categoria = categoria
-        self.console = console
+        self.nome=nome
+        self.categoria=categoria
+        self.console=console
 
-# Initial list of games
-jogo1 = Jogo('God of War', 'Ação', 'PS4')
-jogo2 = Jogo('Skyrim', 'RPG', 'PC')
-jogo3 = Jogo('Valorant', 'FPS', 'PC')
+jogo1 = Jogo('Tetris', 'Puzzle', 'Atari')
+jogo2 = Jogo('God of War', 'Hack n Slash', 'PS2')
+jogo3 = Jogo('Mortal Kombat', 'Luta', 'PS2')
 lista = [jogo1, jogo2, jogo3]
 
 app = Flask(__name__)
 
 @app.route('/')
-def listar_jogos():
-    return render_template('lista.html', titulo='Jogoteca', jogos=lista)
+def index():
+    return render_template('lista.html', titulo='Jogos', jogos=lista)
 
 @app.route('/novo')
-def novo_jogo():
+def novo():
     return render_template('novo.html', titulo='Novo Jogo')
 
 @app.route('/criar', methods=['POST',])
-def criar_jogo():
+def criar():
     nome = request.form['nome']
     categoria = request.form['categoria']
     console = request.form['console']
-    
-    novo_jogo_obj = Jogo(nome, categoria, console)
-    lista.append(novo_jogo_obj)
-    
-    
+    jogo = Jogo(nome, categoria, console)
+    lista.append(jogo)
     return redirect('/')
 
-if __name__ == '__main__':
-    app.run(debug=True)
+app.run(debug=True)
